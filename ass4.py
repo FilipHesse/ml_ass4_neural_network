@@ -20,7 +20,7 @@ plt.plot(class1[:,0], class1[:,1], "bs")
 plt.plot(class2[:,0], class2[:,1], "g^")
 plt.show()
 # %%
-perceptron(iris, 0.001, 3)
+perceptron(iris, 0.8, 3)
 #perceptron(#call entire matrix function! mnist.images_train, 0.002, 3)
 
 pass

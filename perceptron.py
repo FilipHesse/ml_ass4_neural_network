@@ -63,7 +63,7 @@ def perceptron_train(data, eta):
     n = np.size(x,0)    #number of inputs = nr of rows
     x = np.c_[np.ones(n), data[:,:-1]]  #Append column of ones at the beginning of all x for multiplication with w0
     d = np.size(x,1)    #dimension of input = nr of columns
-    w = 2*(np.random.rand(1,d)-0.5)       #Weights initialized randomly in range [-1 1]
+    w = 2*(np.random.rand(d)-0.5)       #Weights initialized randomly in range [-1 1]
                                             #Dimension is one higher than dimension of x because of constant bias
     w_last = w
     delta = 2*(np.ones(d))              #delta is array of 2s in the beginning
@@ -77,8 +77,8 @@ def perceptron_train(data, eta):
         delta = .5*(t[l]-a)
         dw = eta*delta*x[l,:]
         w = w + dw
-        if l == 0:
-            print("delta={}, w={}, iterations= {}".format(delta, w, iterations_over_dataset))
+        if iterations_over_dataset == 0:
+            print("delta={}, w={}, observation= {}".format(delta, w, l))
         l += 1
         if l==n:
             l=0
@@ -89,20 +89,19 @@ def perceptron_train(data, eta):
             if error_rate == 0:
                 stop = True
                 print("Perceptron_train: The network converged, error = 0-----------")
-            if np.all(w == w_last):
+            elif np.all(w == w_last):
                 stop = True
                 print("Perceptron_train: w did not change anymore, stopping----------")
             #if iterations_over_dataset % 100 == 0:
-            if iterations_over_dataset == 100000:
+            elif iterations_over_dataset == 100000:
                 stop = True
                 print("Perceptron_train: Stops without convergence: 100000 iterations over whole dataset completed")
             w_last = w    
-    print("Perceptron_train: The network converged -----------------------")
     return w
 
 def comp_error_rate(x,w,t):
-    a = [ np.sign(np.dot(w,x[l,:])) for l in np.arange(np.size(x,0)) ]  
-    err_cnt = np.count_nonzero(a == t)
+    a = np.sign(x@w)
+    err_cnt = np.count_nonzero(~(a == t))
     return err_cnt/np.size(x,0)
 
 

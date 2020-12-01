@@ -49,3 +49,12 @@ class MnistData():
 
     def get_subset_test_complement(self,num):
         return self.images_test[np.logical_not(self.labels_test == num),:]
+
+    def get_train_set_one_matrix(self,num=None):
+        if num==None:
+            return np.c_[self.images_train, self.labels_train]
+        else:
+            return np.c_[self.get_subset_train(num), self.labels_train[self.labels_train == num]]
+
+    def get_train_set_one_matrix_complement(self,num):
+        return np.c_[self.get_subset_train_complement(num), self.labels_train[np.logical_not(self.labels_train == num)]]

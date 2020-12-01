@@ -43,7 +43,7 @@ def perceptron(data, eta, k=None):
                 boolean_mask[i*training_set_length:] = True #Till the end
             training_set = data[perm,:][~boolean_mask]
             test_set = data[perm,:][boolean_mask]
-            #train(training_set)
+            perceptron_train(training_set, eta)
             #compute confusion Matrix C
             #Add R(xi) to set S
         #Train over total data --> not needed in this context, we only want to know confusion Matrix
@@ -57,25 +57,52 @@ def perceptron(data, eta, k=None):
     # some comment about choosing the random value each time again => yes!
     pass
 
-def perceptron_learn(data, eta):
-    x = data[:-1]
-    t = data[-1]
-    d = np.size(x,1)    #dimension of input = nr of columns
+def perceptron_train(data, eta):
+    x = data[:,:-1]
+    t = data[:,-1]
     n = np.size(x,0)    #number of inputs = nr of rows
-    w = 2*(np.random.rand(1,d)-0.5)       #weights initialized randomly in range [-1 1]
+    x = np.c_[np.ones(n), data[:,:-1]]  #Append column of ones at the beginning of all x for multiplication with w0
+    d = np.size(x,1)    #dimension of input = nr of columns
+    w = 2*(np.random.rand(1,d)-0.5)       #Weights initialized randomly in range [-1 1]
+                                            #Dimension is one higher than dimension of x because of constant bias
+    w_last = w
+    delta = 2*(np.ones(d))              #delta is array of 2s in the beginning
     l = 0               #starting index
-    while (error):
-        r = w*x[l,:]
+    iterations_over_dataset = 0
+    stop = False
+    print("Perceptron_train: Start training ----------------------")
+    while (not stop): #while delta (error) is not zero
+        r = np.dot(w,x[l,:])
         a = np.sign(r)
         delta = .5*(t[l]-a)
         dw = eta*delta*x[l,:]
         w = w + dw
+        if l == 0:
+            print("delta={}, w={}, iterations= {}".format(delta, w, iterations_over_dataset))
         l += 1
         if l==n:
             l=0
-            if not np.any(delta):   #delta (error) is zero
-                print("The network converged")
-                return w
+            iterations_over_dataset += 1
+            #stop conditions
+            error_rate = comp_error_rate(x,w,t)  #stop, if output exactly eqal target vector
+            print("Error_rate= {}, w={}, iterations= {}".format(error_rate, w, iterations_over_dataset))
+            if error_rate == 0:
+                stop = True
+                print("Perceptron_train: The network converged, error = 0-----------")
+            if np.all(w == w_last):
+                stop = True
+                print("Perceptron_train: w did not change anymore, stopping----------")
+            #if iterations_over_dataset % 100 == 0:
+            if iterations_over_dataset == 100000:
+                stop = True
+                print("Perceptron_train: Stops without convergence: 100000 iterations over whole dataset completed")
+            w_last = w    
+    print("Perceptron_train: The network converged -----------------------")
+    return w
 
+def comp_error_rate(x,w,t):
+    a = [ np.sign(np.dot(w,x[l,:])) for l in np.arange(np.size(x,0)) ]  
+    err_cnt = np.count_nonzero(a == t)
+    return err_cnt/np.size(x,0)
 
 

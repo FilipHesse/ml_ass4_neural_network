@@ -58,3 +58,9 @@ class MnistData():
 
     def get_train_set_one_matrix_complement(self,num):
         return np.c_[self.get_subset_train_complement(num), self.labels_train[np.logical_not(self.labels_train == num)]]
+
+    def isolate_class_from_trainset(self,num):
+        labels = self.labels_train
+        labels[labels == num] = 1
+        labels[np.logical_not(labels == num)] = 0
+        return np.c_[self.images_train, labels]

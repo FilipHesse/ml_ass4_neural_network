@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from perceptron import perceptron
 from adaline import adaline
 from iris_data import load_iris
+import pickle
 
 # Load data
 mnist=MnistData()
@@ -22,15 +23,27 @@ iris=load_iris()
 # plt.plot(class2[:,0], class2[:,1], "g^")
 # plt.show()
 # %%
-perceptron(iris, 0.5, 150)
-# C = [perceptron(iris, 0.5, 2), 
-#     perceptron(iris, 0.5, 3),
-#     perceptron(iris, 0.5, 10),
-#     perceptron(iris, 0.5, 100)]
+
+eta = [0.2, 0.5, 0.8]
+k = [2, 3, 4, 5, 10, 50, 100, 150]
+params = [(x,y) for x in eta for y in k]
+
+iris_C = {}
+for param in params:
+    iris_C[param] = perceptron(iris, *(param))
+
 adaline(iris, 0.0001, 3)
 #perceptron(#call entire matrix function! mnist.images_train, 0.002, 3)
 
 print(C)
+
+f = open('store.pckl', 'wb')
+pickle.dump(obj, f)
+f.close()
+
+f = open('store.pckl', 'rb')
+obj = pickle.load(f)
+f.close()
 
 
 # %%

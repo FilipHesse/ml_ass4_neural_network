@@ -10,7 +10,11 @@ import matplotlib.pyplot as plt
 from perceptron import perceptron
 from adaline import adaline
 from iris_data import load_iris
+from configure_logging import configure_logging
 import pickle
+import logging
+
+configure_logging()
 
 # Tell the script what to do
 display_iris_set = False
@@ -41,12 +45,14 @@ if train_iris:
 
     #Train iris with perceptron
     iris_perceptron_C = {}
-    for param in params_perceptron:
+    for i, param in enumerate(params_perceptron):
+        logging.info('Training with perceptron nr %d',i)
         iris_perceptron_C[param] = perceptron(iris, *(param))
 
     #Train iris with adaline
     iris_adaline_C = {}
-    for param in params_adaline:
+    for i, param in enumerate(params_adaline):
+        logging.info('Training with adaline nr %d',i)
         iris_adaline_C[param] = adaline(iris, *(param))
 
     #Save computed confusion matrices

@@ -17,7 +17,7 @@ def comp_confusion_matrix(data,w):
 
     a = np.sign(x@w)
 
-    C=np.array( [[np.count_nonzero((a==class1)[t==class1])/n , np.count_nonzero((~(a==class1))[t==class1])/n],
-                [np.count_nonzero((a==class1)[~(t==class1)])/n , np.count_nonzero((~(a==class1))[~(t==class1)])/n]])
+    C=np.array( [[np.count_nonzero((~(a==class1))[~(t==class1)])/n, np.count_nonzero((a==class1)[~(t==class1)])/n ],
+                [ np.count_nonzero((~(a==class1))[t==class1])/n, np.count_nonzero((a==class1)[t==class1])/n]] )
 
     return C

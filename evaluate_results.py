@@ -17,3 +17,8 @@ for element in iris_perceptron_C:
 
 for element in iris_adaline_C:
     print("eta={}, k={}:\n C={}".format(element[0], element[1], iris_adaline_C[element]))
+
+#Compute quality indices
+#accuracy: trace (C)
+#sensitivity:
+#specificity:

@@ -12,38 +12,52 @@ from adaline import adaline
 from iris_data import load_iris
 import pickle
 
+# Tell the script what to do
+display_iris_set = False
+train_iris = True
+
 # Load data
 mnist=MnistData()
 mnist_trainset_1 = mnist.isolate_class_from_trainset(1)
 
-iris=load_iris()
-# class1 = iris[iris[:,2]==-1,:]
-# class2 = iris[iris[:,2]==1,:]
-# plt.plot(class1[:,0], class1[:,1], "bs")
-# plt.plot(class2[:,0], class2[:,1], "g^")
-# plt.show()
-# %%
+if train_iris:
+    # Load
+    iris=load_iris()
 
-eta = [0.2, 0.5, 0.8]
-k = [2, 3, 4, 5, 10, 50, 100, 150]
-params = [(x,y) for x in eta for y in k]
+    #Display set
+    if display_iris_set:
+        class1 = iris[iris[:,2]==-1,:]
+        class2 = iris[iris[:,2]==1,:]
+        plt.plot(class1[:,0], class1[:,1], "bs")
+        plt.plot(class2[:,0], class2[:,1], "g^")
+        plt.show()
 
-iris_C = {}
-for param in params:
-    iris_C[param] = perceptron(iris, *(param))
+    #Configute parameters
+    eta_perceptron = [0.2, 0.5, 0.8]
+    eta_adaline = [0.0001, 0.0005, 0.001]
+    k = [2, 3, 4, 5, 10, 50, 100, 150]
+    params_perceptron = [(x,y) for x in eta_perceptron for y in k]
+    params_adaline = [(x,y) for x in eta_adaline for y in k]
 
-adaline(iris, 0.0001, 3)
-#perceptron(#call entire matrix function! mnist.images_train, 0.002, 3)
+    #Train iris with perceptron
+    iris_perceptron_C = {}
+    for param in params_perceptron:
+        iris_perceptron_C[param] = perceptron(iris, *(param))
 
-print(C)
+    #Train iris with adaline
+    iris_adaline_C = {}
+    for param in params_adaline:
+        iris_adaline_C[param] = adaline(iris, *(param))
 
-f = open('store.pckl', 'wb')
-pickle.dump(obj, f)
-f.close()
+    #Save computed confusion matrices
+    f = open('iris_perceptron_C.pckl', 'wb')
+    pickle.dump(iris_perceptron_C, f)
+    f.close()
 
-f = open('store.pckl', 'rb')
-obj = pickle.load(f)
-f.close()
+    f = open('iris_adaline_C.pckl', 'wb')
+    pickle.dump(iris_adaline_C, f)
+    f.close()
 
+    print(iris_perceptron_C)
+    print(iris_adaline_C)
 
-# %%

@@ -76,7 +76,7 @@ if train_mnist:
     params_adaline = [(x,y) for x in eta_adaline for y in k]
 
     #test1 = perceptron(mnist.isolate_class_from_trainset(1)[:100], 0.2, 2)
-    test2 = adaline(mnist.isolate_class_from_trainset(1)[:200], 0.000000002, 2)
+    test2 = adaline(mnist.isolate_class_from_trainset(1)[:10000], 0.000000002, 2)
 
     #Train mnist with perceptron
     mnist_perceptron_C_1 = {}

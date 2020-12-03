@@ -2,6 +2,7 @@
 from mnist import MNIST
 import os
 import numpy as np
+from copy import deepcopy
 
 class MnistData():
     def __init__(self):
@@ -33,10 +34,10 @@ class MnistData():
         images_test_list, labels_test_list = mndata.load_testing()
 
         #Convert to np.array
-        self.images_train = np.array(images_train_list)
-        self.labels_train = np.array(labels_train_list)
-        self.images_test = np.array(images_test_list)
-        self.labels_test = np.array(labels_test_list)
+        self.images_train = np.array(images_train_list,dtype=np.float32)
+        self.labels_train = np.array(labels_train_list,dtype=np.float32)
+        self.images_test = np.array(images_test_list,dtype=np.float32)
+        self.labels_test = np.array(labels_test_list,dtype=np.float32)
     
     def get_subset_train(self,num):
         return self.images_train[self.labels_train == num,:]
@@ -60,7 +61,7 @@ class MnistData():
         return np.c_[self.get_subset_train_complement(num), self.labels_train[np.logical_not(self.labels_train == num)]]
 
     def isolate_class_from_trainset(self,num):
-        labels = self.labels_train
-        labels[labels == num] = 1
-        labels[np.logical_not(labels == num)] = 0
+        labels = deepcopy(self.labels_train)
+        labels[np.logical_not(labels == num)] = -1
+        labels[labels == num] = 1   
         return np.c_[self.images_train, labels]

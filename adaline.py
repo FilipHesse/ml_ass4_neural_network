@@ -14,7 +14,7 @@ def adaline_train(data, eta):
     n = np.size(x,0)                    #number of inputs = nr of rows
     x = np.c_[np.ones(n), data[:,:-1]]  #Append column of ones at the beginning of all x for multiplication with w0
     d = np.size(x,1)                    #dimension of input = nr of columns
-    w = 2*(np.random.rand(d)-0.5)       #Weights initialized randomly in range [-1 1]
+    w = 0.002*(np.random.rand(d)-0.5)       #Weights initialized randomly in range [-1 1]
                                         #Dimension is one higher than dimension of x because of constant bias
     w_last = w
     delta = 2*(np.ones(d))              #delta is array of 2s in the beginning
@@ -30,8 +30,8 @@ def adaline_train(data, eta):
         delta = (t[l]-r)
         dw = eta*delta*x[l,:]
         w = w + dw
-        if iterations_over_dataset == 0:
-            print("dw={}, x_{}".format(dw, l))
+        #if iterations_over_dataset == 0:
+        #    print("dw={}, x_{}".format(dw, l))
         l += 1
         if l==n:
             l=0
@@ -52,5 +52,5 @@ def adaline_train(data, eta):
                 print("Adaline_train: Stops without convergence: 100000 iterations over whole dataset completed")
             w_last = w    
     
-    logging.info("Returning from Adaline_train: w={}, error_rate={}".format(w, error_rate))
+    logging.info("Returning from Adaline_train: error_rate={}".format( error_rate))
     return w

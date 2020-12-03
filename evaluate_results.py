@@ -3,6 +3,7 @@
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 class TestResult:
     def __init__(self,eta,k,C):
@@ -27,8 +28,8 @@ class TestResult:
         self.F = 2*(self.prec*self.sens)/(self.prec+self.sens)
 
     
-names = ['iris_perceptron_C','iris_adaline_C','mnist_perceptron_C_1', 'mnist_perceptron_C_2']
-
+names = ['iris_perceptron_C','iris_adaline_C','mnist_perceptron_C_1', 'mnist_perceptron_C_2', 'xor_perceptron_C', 'xor_adaline_C']
+#, 'mnist_adaline_C_1', 'mnist_adaline_C_2'
 for name in names:
     f = open( name+ '.pckl', 'rb')
     C_dict = pickle.load(f)
@@ -40,9 +41,15 @@ for name in names:
         test_result.append(TestResult(element[0], element[1], C_dict[element]))
 
 
-    plt.plot([elem.k for elem in test_result],[elem.F for elem in test_result],"*")
+    plt.plot([elem.eta for elem in test_result],[elem.F for elem in test_result],"*")
     plt.title(name)
     plt.show() 
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111,projection='3d')
+    ax.scatter(np.array([elem.k for elem in test_result]), np.array([elem.eta for elem in test_result]), np.array([elem.F for elem in test_result]))
+    plt.title(name)
+    plt.show()
 
 
 

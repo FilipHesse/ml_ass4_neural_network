@@ -2,6 +2,7 @@
 import numpy as np
 from splitting import split_and_train
 from testing import comp_error_rate
+import logging
 
 def adaline(data, eta, k=None):
     return split_and_train(adaline_train, data, eta, k)
@@ -20,7 +21,7 @@ def adaline_train(data, eta):
     l = 0                               #starting index
     iterations_over_dataset = 0
     stop = False
-    print("Perceptron_train: Start training ----------------------")
+    print("Adaline_train: Start training ----------------------")
     while (not stop): #while delta (error) is not zero
         if l==49:
             pass
@@ -41,13 +42,15 @@ def adaline_train(data, eta):
                 print("Error_rate= {}, iterations= {}".format(error_rate, iterations_over_dataset))
             if error_rate == 0:
                 stop = True
-                print("Perceptron_train: The network converged, error = 0-----------")
+                logging.info("Adaline_train: The network converged, error = 0-----------")
             elif np.all(w == w_last):
                 stop = True
-                print("Perceptron_train: w did not change anymore, stopping----------")
+                logging.info("Adaline_train: w did not change anymore, stopping, iterations: {}".format(iterations_over_dataset))
             #if iterations_over_dataset % 100 == 0:
             elif iterations_over_dataset == 100000:
                 stop = True
-                print("Perceptron_train: Stops without convergence: 30000 iterations over whole dataset completed")
+                print("Adaline_train: Stops without convergence: 100000 iterations over whole dataset completed")
             w_last = w    
+    
+    logging.info("Returning from Adaline_train: w={}, error_rate={}".format(w, error_rate))
     return w

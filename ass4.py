@@ -19,7 +19,8 @@ configure_logging()
 # Tell the script what to do
 display_iris_set = False
 train_iris = False
-train_mnist = True
+train_mnist = False
+train_xor = True
 
 if train_iris:
     # Load
@@ -116,3 +117,50 @@ if train_mnist:
         pickle.dump(mnist_adaline_C_2, f)
         f.close()
 
+if train_xor:
+    # Load
+    xor=np.array([[0, 0, 0],
+                    [1, 0, 1],
+                    [0, 1, 1],
+                    [1, 1, 0],
+                    [0, 0, 0],
+                    [1, 0, 1],
+                    [0, 1, 1],
+                    [1, 1, 0]])
+
+    # class1 = xor[xor[:,2]==0,:]
+    # class2 = xor[xor[:,2]==1,:]
+    # plt.plot(class1[:,0], class1[:,1], "bs")
+    # plt.plot(class2[:,0], class2[:,1], "g^")
+    # plt.show()
+
+    #Configute parameters
+    eta_perceptron = [0.5, 0.1, 0.01, 0.001]
+    eta_adaline = [0.5, 0.1, 0.01, 0.001]
+    k = [2]
+    params_perceptron = [(x,y) for x in eta_perceptron for y in k]
+    params_adaline = [(x,y) for x in eta_adaline for y in k]
+
+    #Train xor with perceptron
+    xor_perceptron_C = {}
+    for i, param in enumerate(params_perceptron):
+        logging.info('Training xor with perceptron. eta={} k={}'.format(param[0], param[1]))
+        xor_perceptron_C[param] = perceptron(xor, *(param))
+
+    #Save computed confusion matrices
+    f = open('xor_perceptron_C.pckl', 'wb')
+    pickle.dump(xor_perceptron_C, f)
+    f.close()
+
+    #Train xor with adaline
+    xor_adaline_C = {}
+    for i, param in enumerate(params_adaline):
+        logging.info('Training xor with adaline. eta={} k={}'.format(param[0], param[1]))
+        xor_adaline_C[param] = adaline(xor, *(param))
+
+    f = open('xor_adaline_C.pckl', 'wb')
+    pickle.dump(xor_adaline_C, f)
+    f.close()
+
+    print(xor_perceptron_C)
+    print(xor_adaline_C)

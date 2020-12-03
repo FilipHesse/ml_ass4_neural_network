@@ -35,7 +35,8 @@ def perceptron_train(data, eta):
             iterations_over_dataset += 1
             #stop conditions
             error_rate = comp_error_rate(x,w,t)  #stop, if output exactly eqal target vector
-            print("Error_rate= {}, w={}, iterations= {}".format(error_rate, w, iterations_over_dataset))
+            if iterations_over_dataset % 100 == 0:
+                print("Error_rate= {}, w={}, iterations= {}".format(error_rate, w, iterations_over_dataset))
             if error_rate == 0:
                 stop = True
                 print("Perceptron_train: The network converged, error = 0-----------")
@@ -43,9 +44,9 @@ def perceptron_train(data, eta):
                 stop = True
                 print("Perceptron_train: w did not change anymore, stopping----------")
             #if iterations_over_dataset % 100 == 0:
-            elif iterations_over_dataset == 100000:
+            elif iterations_over_dataset == 10000:
                 stop = True
-                print("Perceptron_train: Stops without convergence: 100000 iterations over whole dataset completed")
+                print("Perceptron_train: Stops without convergence: 10000 iterations over whole dataset completed")
             w_last = w    
     return w
 

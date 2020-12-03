@@ -22,20 +22,23 @@ def adaline_train(data, eta):
     stop = False
     print("Perceptron_train: Start training ----------------------")
     while (not stop): #while delta (error) is not zero
+        if l==49:
+            pass
         r = np.dot(w,x[l,:])
         a = np.sign(r)
         delta = (t[l]-r)
         dw = eta*delta*x[l,:]
         w = w + dw
         if iterations_over_dataset == 0:
-            print("dw={}, w={}, x_{}".format(dw, w, l))
+            print("dw={}, x_{}".format(dw, l))
         l += 1
         if l==n:
             l=0
             iterations_over_dataset += 1
             #stop conditions
             error_rate = comp_error_rate(x,w,t)  #stop, if output exactly eqal target vector
-            print("Error_rate= {}, w={}, iterations= {}".format(error_rate, w, iterations_over_dataset))
+            if iterations_over_dataset % 100 == 0:
+                print("Error_rate= {}, iterations= {}".format(error_rate, iterations_over_dataset))
             if error_rate == 0:
                 stop = True
                 print("Perceptron_train: The network converged, error = 0-----------")
@@ -45,6 +48,6 @@ def adaline_train(data, eta):
             #if iterations_over_dataset % 100 == 0:
             elif iterations_over_dataset == 100000:
                 stop = True
-                print("Perceptron_train: Stops without convergence: 100000 iterations over whole dataset completed")
+                print("Perceptron_train: Stops without convergence: 30000 iterations over whole dataset completed")
             w_last = w    
     return w

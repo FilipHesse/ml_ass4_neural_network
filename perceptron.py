@@ -45,7 +45,7 @@ def perceptron_train(data, eta):
                 stop = True
                 logging.info("Perceptron_train: w did not change anymore, stopping, iterations: {}".format(iterations_over_dataset))
             #if iterations_over_dataset % 100 == 0:
-            elif iterations_over_dataset == 100000:
+            elif iterations_over_dataset == 10000:
                 stop = True
                 logging.info("Perceptron_train: Stops without convergence: 100000 iterations over whole dataset completed")
             w_last = w    

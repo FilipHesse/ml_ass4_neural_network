@@ -77,21 +77,19 @@ if train_mnist:
     #Configute parameters
     eta_perceptron = [0.2]
     eta_adaline = [0.0000001]
-    k = [2,3]
+    k = [2]
     params_perceptron = [(x,y) for x in eta_perceptron for y in k]
     params_adaline = [(x,y) for x in eta_adaline for y in k]
 
-    #test1 = perceptron(mnist.isolate_class_from_trainset(1)[:100], 0.2, 2)
-    test2 = adaline(mnist.isolate_class_from_trainset(1)[:1000], 0.0000001, 2)
 
     #Train mnist with perceptron
     mnist_perceptron_C_1 = {}
     mnist_perceptron_C_2 = {}
     for i, param in enumerate(params_perceptron):
         logging.info('Training mnist digit1 with perceptron. eta={} k={}'.format(param[0], param[1]))
-        mnist_perceptron_C_1[param] = perceptron(mnist.isolate_class_from_trainset(1)[:1000], *(param))
+        mnist_perceptron_C_1[param] = perceptron(mnist.isolate_class_from_trainset(1)[:10000], *(param))
         logging.info('Training mnist digit2 with perceptron. eta={} k={}'.format(param[0], param[1]))
-        mnist_perceptron_C_2[param] = perceptron(mnist.isolate_class_from_trainset(2)[:1000], *(param))
+        mnist_perceptron_C_2[param] = perceptron(mnist.isolate_class_from_trainset(8)[:10000], *(param))
             
         #Save computed confusion matrices
         f = open('mnist_perceptron_C_1.pckl', 'wb')
@@ -108,9 +106,9 @@ if train_mnist:
     mnist_adaline_C_2 = {}
     for i, param in enumerate(params_adaline):
         logging.info('Training mnist digit1 with adaline. eta={} k={}'.format(param[0], param[1]))
-        mnist_adaline_C_1[param] = adaline(mnist.isolate_class_from_trainset(1)[:1000], *(param))
+        mnist_adaline_C_1[param] = adaline(mnist.isolate_class_from_trainset(1)[:10000], *(param))
         logging.info('Training mnist digit2 with adaline. eta={} k={}'.format(param[0], param[1]))
-        mnist_adaline_C_2[param] = adaline(mnist.isolate_class_from_trainset(2)[:1000], *(param))
+        mnist_adaline_C_2[param] = adaline(mnist.isolate_class_from_trainset(8)[:10000], *(param))
 
 
         #Save computed confusion matrices

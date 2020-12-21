@@ -1,7 +1,7 @@
 iris converges easy
-perceptron on mnist works not too bad
-adaline on mnist did not work
+perceptron on mnist works fine
+adaline on mnist also works
 perceptron and adaline both can not cassify xor, 
 but adaline converges to a value of w, perceptron does not 
-specificity with Adaline is always zero (->??)
+
 

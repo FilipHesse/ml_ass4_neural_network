@@ -26,7 +26,7 @@ class TestResult:
         self.spec=self.C[0,0]/(self.C[0,0] + self.C[0,1])
 
     def compute_precision(self):
-        self.prec=self.C[1,1]/(self.C[1,1] + self.C[1,0])
+        self.prec=self.C[1,1]/(self.C[1,1] + self.C[0,1])
 
     def compute_F_measure(self):
         self.F = 2*(self.prec*self.sens)/(self.prec+self.sens)
